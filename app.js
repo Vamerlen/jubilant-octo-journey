@@ -112,8 +112,23 @@ function removeToDo(toDoItem) {
   toDoContainer[toDoItem.id].trash = true;
 }
 
-// Targeting the dynamically created to do items
-Uncaught TypeError: can't access property 0, evt.path is undefined
-    <anonymous> file:///C:/Users/vafadie/Documents/Javascript Bootcamp 2022/Chapter 28 - Poject #19 - The To Do List App - Finished Project/app.js:118
-2 app.js:118:5
+toDoList.addEventListener("click", function (evt) {
+  const path = evt.composedPath();
+  if (
+    path[0].localName === "p" ||
+    path[0].localName === "li" ||
+    path[0].localName === "ul"
+  ) return;
+
+  const toDoItem = evt.target;
+  const toDoStatus = toDoItem.attributes.status.value;
+
+  if (toDoStatus === "complete") {
+    completeToDo(toDoItem);
+  } else if (toDoStatus === "delete") {
+    removeToDo(toDoItem);
+  }
+
+  localStorage.setItem("to-do-item", JSON.stringify(toDoContainer));
+});
 
